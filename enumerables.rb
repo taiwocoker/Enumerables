@@ -98,6 +98,11 @@ module Enumerable
     accumulator
   end
 
+  def multiply_els(array)
+    array.my_inject { |result, x| result * x }
+  end
+
+
 
 end
 
