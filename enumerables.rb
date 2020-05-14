@@ -46,6 +46,36 @@ module Enumerable
     length == result.length
   end
 
+  def my_any?
+    return to_enum(:my_any) unless block_given?
+
+    result = my_select { |x| yield x }
+
+    result.length.positive?
+  end
+
+  def my_none?
+    return to_enum(:my_none) unless block_given?
+
+    !my_any?
+  end
+
+  def my_count(count = nil)
+    return count if count
+    return length unless block_given?
+
+    my_select { |x| yield x }.length
+  end
+
+  def my_map(my_proc = nil)
+    array = []
+    my_each { |x| array << my_proc.call(x) } if my_proc
+    my_each { |x| array << yield(x) } if block_given?
+
+    array
+  end
+
+
 end
 
 arr=[1,2,3,4,5,6]
