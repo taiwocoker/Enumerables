@@ -21,21 +21,13 @@ module Enumerable
 
 
   def my_select
-    return to_enum(:my_select) unless block_given?
+    result = []
+    return to_enum unless block_given?
 
-    if is_a?(Array)
-      arr = []
-      my_each do |num|
-        arr << num if yield(num)
-      end
-      arr
-    elsif is_a?(Hash)
-      hash = {}
-      my_each do |key, val|
-        hash[key] = val if yield(key, val)
-      end
-      hash
+    my_each do |x|
+      result << x if yield(x)
     end
+    result
   end
 
   def my_all?
