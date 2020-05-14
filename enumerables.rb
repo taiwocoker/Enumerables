@@ -72,14 +72,14 @@ module Enumerable
               block
             else
               raise ArgumentError, 'the operation provided must be a symbol'
-    end
+            end
     if accumulator.nil?
       ignore_first = true
       accumulator = first
     end
     index = 0
     each do |element|
-      accumulator = block.call(accumulator, element) unless ignore_first && index == 0
+      accumulator = block.call(accumulator, element) unless ignore_first && index.zero?
       index += 1
     end
     accumulator
