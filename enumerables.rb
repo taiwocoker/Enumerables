@@ -1,5 +1,3 @@
-# rubocop: disable Metrics/ModuleLength
-# rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 module Enumerable
   def my_each
     return to_enum(:my_each) unless block_given?
@@ -18,7 +16,6 @@ module Enumerable
       i += 1
     end
   end
-
 
   def my_select
     result = []
@@ -69,12 +66,12 @@ module Enumerable
 
   def my_inject(accumulator = nil, operation = nil, &block)
     block = case operation
-      when Symbol
-        lambda { |acc, value| acc.send(operation, value) }
-      when nil
-        block
-      else
-      raise ArgumentError, "the operation provided must be a symbol"
+            when Symbol
+              ->(acc, value) { acc.send(operation, value) }
+            when nil
+              block
+            else
+              raise ArgumentError, 'the operation provided must be a symbol'
     end
     if accumulator.nil?
       ignore_first = true
@@ -82,9 +79,7 @@ module Enumerable
     end
     index = 0
     each do |element|
-      unless ignore_first && index == 0
-        accumulator = block.call(accumulator, element)
-      end
+      accumulator = block.call(accumulator, element) unless ignore_first && index == 0
       index += 1
     end
     accumulator
@@ -93,13 +88,6 @@ module Enumerable
   def multiply_els(array)
     array.my_inject { |result, x| result * x }
   end
-
-
-
 end
 
-
-
-
-# rubocop: enable Metrics/ModuleLength
-# rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
+# rubocop: enable
